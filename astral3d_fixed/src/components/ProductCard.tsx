@@ -1,52 +1,82 @@
 // src/components/ProductCard.tsx
-import Link from "next/link";
-import { Product } from "@/data/catalog";
+"use client";
 
-export default function ProductCard({ product }: { product: Product }) {
+import Image from "next/image";
+import Link from "next/link";
+import { Product, formatPrice } from "@/data/catalog";
+import { useCart } from "@/context/CartContext";
+import { FaShoppingCart, FaEye } from "react-icons/fa";
+
+interface ProductCardProps {
+  product: Product;
+}
+
+export default function ProductCard({ product }: ProductCardProps) {
+  const { addToCart } = useCart();
+
   return (
-    <div className="group relative bg-[#0d071f] border border-purple-900/40 rounded-xl overflow-hidden transition-all duration-300 hover:border-fuchsia-500 hover:shadow-[0_0_25px_rgba(217,70,239,0.2)] flex flex-col h-full">
+    <div className="group relative flex flex-col overflow-hidden rounded-3xl border border-white/10 bg-[#0d071f]/40 backdrop-blur-md transition-all duration-300 hover:border-fuchsia-500/40 hover:shadow-[0_0_30px_rgba(168,85,247,0.2)]">
       
-      {/* Contenedor de Imagen con etiqueta estándar para evitar bloqueos de Next.js */}
-      <div className="relative aspect-square w-full overflow-hidden bg-[#140b2e]">
-        <img
-          src={product.image}
+      {/* Contenedor de la Imagen */}
+      <div className="relative aspect-square w-full overflow-hidden bg-white/5">
+        <Image
+          src={product.image || "/logo.png"}
           alt={product.name}
-          className="w-full h-full object-cover transition-transform duration-700 group-hover:scale-105"
-          loading="lazy"
+          fill
+          sizes="(max-w-7xl) 25vw, 50vw"
+          className="object-cover transition-transform duration-500 group-hover:scale-110"
         />
-        {/* Badge de Material flotante */}
-        <span className="absolute top-3 right-3 bg-black/80 backdrop-blur-md text-[10px] text-cyan-400 font-black uppercase tracking-widest px-2.5 py-1 rounded border border-cyan-500/30">
-          {product.material}
-        </span>
+        {/* Capa difuminada Cyberpunk al pasar el ratón */}
+        <div className="absolute inset-0 bg-gradient-to-t from-[#070512] via-transparent to-transparent opacity-60" />
       </div>
 
-      {/* Información de la Pieza */}
-      <div className="p-5 flex flex-col flex-grow">
-        <span className="text-[10px] font-bold text-fuchsia-400 uppercase tracking-widest mb-1">
+      {/* Detalles de la Figura */}
+      <div className="flex flex-1 flex-col p-5">
+        <span className="text-[10px] font-black uppercase tracking-widest text-cyan-400">
           {product.franchise}
         </span>
-        <h3 className="text-lg font-extrabold text-white tracking-wide line-clamp-1 group-hover:text-cyan-300 transition-colors">
+        
+        <h3 className="mt-1 text-lg font-bold text-white group-hover:text-fuchsia-300 transition-colors truncate">
           {product.name}
         </h3>
-        
-        {/* Separador e Inferior (Precio + Botón) */}
-        <div className="mt-auto pt-4 flex items-center justify-between border-t border-purple-950/60">
-          <div>
-            <p className="text-[9px] text-gray-500 uppercase font-semibold tracking-wider">Desde</p>
-            <p className="text-xl font-black text-white tracking-tight">
-              {product.priceFrom ? `${product.priceFrom} EUR` : "Cotizar"}
-            </p>
-          </div>
 
-          <Link 
-            href={`/producto/${product.slug}`}
-            className="relative inline-flex items-center justify-center p-0.5 overflow-hidden text-xs font-bold text-white rounded-lg group bg-gradient-to-br from-fuchsia-500 to-cyan-500 hover:text-white focus:ring-2 focus:outline-none focus:ring-purple-800"
-          >
-            <span className="relative px-3 py-2 transition-all ease-in duration-75 bg-[#0d071f] rounded-md group-hover:bg-opacity-0 uppercase tracking-wider text-[11px]">
-              Ver Pieza
+        <p className="mt-2 line-clamp-2 text-xs text-gray-400 flex-1">
+          {product.description}
+        </p>
+
+        {/* Zona de Precio y Tipo de Material */}
+        <div className="mt-4 flex items-center justify-between border-t border-white/5 pt-4">
+          <div className="flex flex-col">
+            <span className="text-[10px] text-gray-500 uppercase font-bold tracking-wider">Desde</span>
+            <span className="text-xl font-black text-white">
+              {formatPrice(product.priceFrom)}
             </span>
-          </Link>
+          </div>
+          <span className="rounded-full bg-white/5 px-2.5 py-1 text-[10px] font-semibold uppercase tracking-wider text-gray-300 border border-white/10">
+            {product.material}
+          </span>
         </div>
+
+        {/* PANEL DE BOTONES INTERACTIVOS */}
+        <div className="mt-5 grid grid-cols-5 gap-2">
+          {/* Botón de Ver Detalles (Ocupa 2 columnas) */}
+          <Link
+            href={`/producto/${product.slug}`}
+            className="col-span-2 flex items-center justify-center gap-1.5 rounded-xl border border-white/10 bg-white/5 text-xs font-bold text-white transition hover:bg-white/10 hover:border-white/20"
+            aria-label={`Ver detalles de ${product.name}`}
+          >
+            <FaEye /> Info
+          </Link>
+
+          {/* Botón de Añadir a la Cesta (Ocupa 3 columnas) */}
+          <button
+            onClick={() => addToCart(product)}
+            className="col-span-3 flex items-center justify-center gap-2 rounded-xl bg-gradient-to-r from-fuchsia-500 to-purple-600 px-3 py-2.5 text-xs font-black text-white shadow-[0_0_15px_rgba(217,70,239,0.25)] transition duration-300 hover:scale-[1.03] hover:from-fuchsia-600 hover:to-purple-700 active:scale-[0.98]"
+          >
+            <FaShoppingCart /> Añadir
+          </button>
+        </div>
+
       </div>
     </div>
   );

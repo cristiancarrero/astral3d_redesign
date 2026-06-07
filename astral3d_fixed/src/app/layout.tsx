@@ -1,24 +1,30 @@
+// src/app/layout.tsx
 import type { Metadata } from "next";
-import "./globals.css";
-import Navbar from "../components/Navbar";
+import "./globals.css"; 
+import { CartProvider } from "@/context/CartContext";
+import Navbar from "@/components/Navbar";
 
 export const metadata: Metadata = {
-  title: "Astral 3D | Figuras, llaveros e impresión 3D personalizada",
-  description: "Tienda de impresión 3D para figuras de resina, piezas en filamento, llaveros, miniaturas y productos personalizados con acabado premium.",
-  keywords: ["impresión 3D", "figuras 3D", "resina", "filamento", "llaveros personalizados", "miniaturas", "figuras anime"],
-  openGraph: {
-    title: "Astral 3D",
-    description: "Figuras 3D, miniaturas, llaveros y piezas personalizadas en resina y filamento.",
-    images: ["/logo.png"],
-  },
+  title: "Astral 3D Studio",
+  description: "Réplicas exclusivas y figuras impresas en alta definición.",
 };
 
-export default function RootLayout({ children }: Readonly<{ children: React.ReactNode }>) {
+export default function RootLayout({
+  children,
+}: {
+  children: React.ReactNode;
+}) {
   return (
-    <html lang="es" className="dark">
-      <body className="bg-[#080515] antialiased">
-        <Navbar />
-        {children}
+    <html lang="es" className="dark" suppressHydrationWarning>
+      {/* 🚀 Añadimos suppressHydrationWarning aquí también para bloquear las extensiones del body */}
+      <body 
+        className="bg-[#05020d] antialiased selection:bg-fuchsia-500 selection:text-white" 
+        suppressHydrationWarning
+      >
+        <CartProvider>
+          <Navbar />
+          {children}
+        </CartProvider>
       </body>
     </html>
   );
