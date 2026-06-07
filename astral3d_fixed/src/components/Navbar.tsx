@@ -154,10 +154,10 @@ export default function Navbar() {
                     </>
                   ) : (
                     <>
-                      <img src={item.image} alt={item.name} className="h-9 w-9 shrink-0 rounded-lg object-cover bg-white/5 border border-white/10" />
-                      <div className="flex flex-col min-w-0">
-                        <span className="text-sm font-bold text-white truncate">{item.name}</span>
-                        <span className="text-[10px] text-cyan-400 font-semibold uppercase tracking-wider truncate">{item.franchise}</span>
+                      <img src={(item as { image?: string }).image || ''} alt={item.name} className="h-9 w-9 shrink-0 rounded-lg object-cover bg-white/5 border border-white/10" />
+<div className="flex flex-col min-w-0">
+  <span className="text-sm font-bold text-white truncate">{item.name}</span>
+  <span className="text-[10px] text-cyan-400 font-semibold uppercase tracking-wider truncate">{(item as { franchise?: string }).franchise || ''}</span>
                       </div>
                     </>
                   )}
@@ -206,8 +206,7 @@ export default function Navbar() {
                     {item.isCategory ? (
                       <><FaFolder className="text-fuchsia-400 shrink-0" /><div className="flex flex-col min-w-0"><span className="text-sm font-bold text-white truncate">{item.name}</span><span className="text-[9px] text-fuchsia-400 uppercase tracking-wider">Sección</span></div></>
                     ) : (
-                      <><img src={item.image} alt={item.name} className="h-8 w-8 shrink-0 rounded-lg object-cover bg-white/5" /><div className="flex flex-col min-w-0"><span className="text-sm font-bold text-white truncate">{item.name}</span><span className="text-[9px] text-cyan-400 uppercase tracking-wider truncate">{item.franchise}</span></div></>
-                    )}
+<><img src={(item as { image?: string }).image || ''} alt={item.name} className="h-8 w-8 shrink-0 rounded-lg object-cover bg-white/5" /><div className="flex flex-col min-w-0"><span className="text-sm font-bold text-white truncate">{item.name}</span><span className="text-[9px] text-cyan-400 uppercase tracking-wider truncate">{(item as { franchise?: string }).franchise || ''}</span></div></>                    )}
                   </Link>
                 ))}
               </div>
