@@ -121,7 +121,7 @@ export default function Home() {
                     <h3 className="text-2xl font-black">{product.name}</h3>
 
                     <span className="shrink-0 rounded-full bg-fuchsia-500/16 px-3 py-1 text-sm font-black text-fuchsia-100">
-                      {formatPrice(product)}
+                      {formatPrice((product as any).price || (product as any).precio || 0)}
                     </span>
                   </div>
 
