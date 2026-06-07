@@ -1,45 +1,53 @@
-import Image from "next/image";
+// src/components/ProductCard.tsx
 import Link from "next/link";
-import { Product, categoryLabels, formatPrice } from "@/data/catalog";
+import { Product } from "@/data/catalog";
 
 export default function ProductCard({ product }: { product: Product }) {
   return (
-    <article className="group overflow-hidden rounded-[2rem] border border-white/10 bg-white/[0.06] shadow-xl transition hover:-translate-y-1 hover:border-fuchsia-300/50 hover:bg-white/[0.09]">
-      <Link href={`/producto/${product.slug}`} className="block">
-        <div className="relative h-72 bg-gradient-to-br from-fuchsia-500/20 via-violet-500/10 to-cyan-400/20">
-          <Image
-            src={product.image}
-            alt={product.name}
-            fill
-            className="object-contain p-8 transition duration-500 group-hover:scale-105"
-            sizes="(min-width: 1024px) 25vw, 50vw"
-          />
-        </div>
+    <div className="group relative bg-[#0d071f] border border-purple-900/40 rounded-xl overflow-hidden transition-all duration-300 hover:border-fuchsia-500 hover:shadow-[0_0_25px_rgba(217,70,239,0.2)] flex flex-col h-full">
+      
+      {/* Contenedor de Imagen con etiqueta estándar para evitar bloqueos de Next.js */}
+      <div className="relative aspect-square w-full overflow-hidden bg-[#140b2e]">
+        <img
+          src={product.image}
+          alt={product.name}
+          className="w-full h-full object-cover transition-transform duration-700 group-hover:scale-105"
+          loading="lazy"
+        />
+        {/* Badge de Material flotante */}
+        <span className="absolute top-3 right-3 bg-black/80 backdrop-blur-md text-[10px] text-cyan-400 font-black uppercase tracking-widest px-2.5 py-1 rounded border border-cyan-500/30">
+          {product.material}
+        </span>
+      </div>
 
-        <div className="p-6">
-          <p className="text-xs font-black uppercase tracking-[0.25em] text-cyan-300">
-            {categoryLabels[product.category]} · {product.franchise}
-          </p>
-
-          <h3 className="mt-3 text-2xl font-black text-white">
-            {product.name}
-          </h3>
-
-          <p className="mt-3 min-h-16 text-sm leading-6 text-white/60">
-            {product.description}
-          </p>
-
-          <div className="mt-5 flex items-center justify-between gap-4">
-            <span className="rounded-full bg-fuchsia-500/15 px-4 py-2 text-sm font-black text-fuchsia-100">
-              {formatPrice(product)}
-            </span>
-
-            <span className="text-sm font-black text-cyan-300">
-              Ver pieza →
-            </span>
+      {/* Información de la Pieza */}
+      <div className="p-5 flex flex-col flex-grow">
+        <span className="text-[10px] font-bold text-fuchsia-400 uppercase tracking-widest mb-1">
+          {product.franchise}
+        </span>
+        <h3 className="text-lg font-extrabold text-white tracking-wide line-clamp-1 group-hover:text-cyan-300 transition-colors">
+          {product.name}
+        </h3>
+        
+        {/* Separador e Inferior (Precio + Botón) */}
+        <div className="mt-auto pt-4 flex items-center justify-between border-t border-purple-950/60">
+          <div>
+            <p className="text-[9px] text-gray-500 uppercase font-semibold tracking-wider">Desde</p>
+            <p className="text-xl font-black text-white tracking-tight">
+              {product.priceFrom ? `${product.priceFrom} EUR` : "Cotizar"}
+            </p>
           </div>
+
+          <Link 
+            href={`/producto/${product.slug}`}
+            className="relative inline-flex items-center justify-center p-0.5 overflow-hidden text-xs font-bold text-white rounded-lg group bg-gradient-to-br from-fuchsia-500 to-cyan-500 hover:text-white focus:ring-2 focus:outline-none focus:ring-purple-800"
+          >
+            <span className="relative px-3 py-2 transition-all ease-in duration-75 bg-[#0d071f] rounded-md group-hover:bg-opacity-0 uppercase tracking-wider text-[11px]">
+              Ver Pieza
+            </span>
+          </Link>
         </div>
-      </Link>
-    </article>
+      </div>
+    </div>
   );
 }
