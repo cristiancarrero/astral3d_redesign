@@ -121,8 +121,8 @@ export default function Home() {
                     <h3 className="text-2xl font-black">{product.name}</h3>
 
                     <span className="shrink-0 rounded-full bg-fuchsia-500/16 px-3 py-1 text-sm font-black text-fuchsia-100">
-                      {formatPrice((product as any).price || (product as any).precio || 0)}
-                    </span>
+  {formatPrice((product as { price?: number; precio?: number }).price || (product as { price?: number; precio?: number }).precio || 0)}
+</span>
                   </div>
 
                   <p className="mt-2 text-sm font-bold text-cyan-200">
