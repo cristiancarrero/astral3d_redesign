@@ -50,7 +50,7 @@ const faqs = [
 
 export default function Home() {
   return (
-    <main className="min-h-screen bg-[#080515] text-white">
+    <main className="min-h-screen bg-[#080515] text-white overflow-x-hidden">
       <ParallaxHero />
 
       <section className="relative z-20 -mt-28 px-4 sm:px-6 lg:px-8">
